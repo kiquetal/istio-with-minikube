@@ -151,3 +151,13 @@ Now you can access the httpbin service in your browser at [http://localhost:8080
 ```bash
 curl http://localhost:8080/headers
 ```
+
+## 6. Troubleshooting
+
+### 6.1. Set istio-proxy logging level to debug
+
+To set the logging level of the istio-proxy to debug for a specific pod (e.g., httpbin), you can use the following command. This change is not persistent across pod restarts.
+
+```bash
+kubectl exec -it "$(kubectl get pod -n apps -l app=httpbin -o jsonpath='{.items[0].metadata.name}')" -n apps -c istio-proxy -- curl -X POST "http://localhost:15000/logging?level=debug"
+```
