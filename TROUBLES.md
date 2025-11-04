@@ -37,3 +37,10 @@ Here are some useful `istioctl` commands for troubleshooting Istio applications:
     ```bash
     istioctl ps <POD_NAME>
     ```
+
+7.  **Enable debug logging for istio-proxy:**
+    ```bash
+    istioctl proxy-config log <POD_NAME> -n <NAMESPACE> --level debug
+    ```
+    This command dynamically changes the log level for the `istio-proxy` in the specified pod to debug. Replace `<POD_NAME>` and `<NAMESPACE>` with the actual pod name and namespace of your service. This change is not persistent across pod restarts.
+

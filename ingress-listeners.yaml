@@ -1,0 +1,55 @@
+- address:
+    socketAddress:
+      address: 0.0.0.0
+      portValue: 15090
+  bypassOverloadManager: true
+  filterChains:
+  - filters:
+    - name: envoy.filters.network.http_connection_manager
+      typedConfig:
+        '@type': type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+        httpFilters:
+        - name: envoy.filters.http.router
+          typedConfig:
+            '@type': type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+        routeConfig:
+          virtualHosts:
+          - domains:
+            - '*'
+            name: backend
+            routes:
+            - match:
+                prefix: /stats/prometheus
+              route:
+                cluster: prometheus_stats
+        statPrefix: stats
+  ignoreGlobalConnLimit: true
+  name: 0.0.0.0_15090
+- address:
+    socketAddress:
+      address: 0.0.0.0
+      portValue: 15021
+  bypassOverloadManager: true
+  filterChains:
+  - filters:
+    - name: envoy.filters.network.http_connection_manager
+      typedConfig:
+        '@type': type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+        httpFilters:
+        - name: envoy.filters.http.router
+          typedConfig:
+            '@type': type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+        routeConfig:
+          virtualHosts:
+          - domains:
+            - '*'
+            name: backend
+            routes:
+            - match:
+                prefix: /healthz/ready
+              route:
+                cluster: agent
+        statPrefix: agent
+  ignoreGlobalConnLimit: true
+  name: 0.0.0.0_15021
+
