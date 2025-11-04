@@ -25,6 +25,12 @@ helm install istio-base istio/base -n istio-system --wait
 
 ```bash
 helm install istiod istio/istiod -n istio-system --wait
+
+### 1.5. Verify istioctl and kubectl compatibility
+
+```bash
+istioctl version
+```
 ```
 
 ## 2. Install the Istio Gateway

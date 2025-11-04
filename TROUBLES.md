@@ -22,6 +22,9 @@ Here are some useful `istioctl` commands for troubleshooting Istio applications:
     ```bash
     istioctl proxy-config routes <POD_NAME>.<NAMESPACE>
     istioctl proxy-config listeners <POD_NAME>.<NAMESPACE>
+    istioctl proxy-config listeners <POD_NAME>.<NAMESPACE> -o yaml | grep -A 5 -B 5 "idleTimeout"
+    ```
+    To specifically find the HTTP idle timeout, use the `listeners` command with `grep` to filter for `idleTimeout` within the `HttpConnectionManager` configuration.
     ```
     Replace `<POD_NAME>` and `<NAMESPACE>` with the actual pod name and namespace of your service.
 
