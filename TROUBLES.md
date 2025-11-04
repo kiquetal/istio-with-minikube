@@ -44,3 +44,9 @@ Here are some useful `istioctl` commands for troubleshooting Istio applications:
     ```
     This command dynamically changes the log level for the `istio-proxy` in the specified pod to debug. Replace `<POD_NAME>` and `<NAMESPACE>` with the actual pod name and namespace of your service. This change is not persistent across pod restarts.
 
+8.  **View the clusters that an Envoy proxy is connected to:**
+    ```bash
+    istioctl proxy-config clusters <POD_NAME>.<NAMESPACE>
+    ```
+    This command shows the upstream clusters that the Envoy proxy is configured to connect to. Replace `<POD_NAME>` and `<NAMESPACE>` with the actual pod name and namespace of your service.
+
