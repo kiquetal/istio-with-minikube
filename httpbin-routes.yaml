@@ -1,0 +1,358 @@
+- ignorePortInHostMatching: true
+  maxDirectResponseBodySizeBytes: 1048576
+  name: "15014"
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - istiod.istio-system.svc.cluster.local
+    - istiod.istio-system.svc.cluster.local.
+    - istiod.istio-system
+    - istiod.istio-system.svc
+    - 10.100.32.70
+    includeRequestAttemptCount: true
+    name: istiod.istio-system.svc.cluster.local:15014
+    routes:
+    - decorator:
+        operation: istiod.istio-system.svc.cluster.local:15014/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: outbound|15014||istiod.istio-system.svc.cluster.local
+        maxGrpcTimeout: 0s
+        retryPolicy:
+          hostSelectionRetryMaxAttempts: "5"
+          numRetries: 2
+          retryHostPredicate:
+          - name: envoy.retry_host_predicates.previous_hosts
+            typedConfig:
+              '@type': type.googleapis.com/envoy.extensions.retry.host.previous_hosts.v3.PreviousHostsPredicate
+          retryOn: connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes
+        timeout: 0s
+  - domains:
+    - '*'
+    includeRequestAttemptCount: true
+    name: allow_any
+    routes:
+    - match:
+        prefix: /
+      name: allow_any
+      route:
+        cluster: PassthroughCluster
+        maxGrpcTimeout: 0s
+        timeout: 0s
+- ignorePortInHostMatching: true
+  maxDirectResponseBodySizeBytes: 1048576
+  name: istio-ingress.istio-ingress.svc.cluster.local:15021
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - '*'
+    includeRequestAttemptCount: true
+    name: istio-ingress.istio-ingress.svc.cluster.local:15021
+    routes:
+    - decorator:
+        operation: istio-ingress.istio-ingress.svc.cluster.local:15021/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: outbound|15021||istio-ingress.istio-ingress.svc.cluster.local
+        maxGrpcTimeout: 0s
+        retryPolicy:
+          hostSelectionRetryMaxAttempts: "5"
+          numRetries: 2
+          retryHostPredicate:
+          - name: envoy.retry_host_predicates.previous_hosts
+            typedConfig:
+              '@type': type.googleapis.com/envoy.extensions.retry.host.previous_hosts.v3.PreviousHostsPredicate
+          retryOn: connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes
+        timeout: 0s
+- ignorePortInHostMatching: true
+  maxDirectResponseBodySizeBytes: 1048576
+  name: "80"
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - httpbin.apps.svc.cluster.local
+    includeRequestAttemptCount: true
+    name: httpbin.apps.svc.cluster.local:80
+    routes:
+    - decorator:
+        operation: httpbin.apps.svc.cluster.local:80/*
+      match:
+        prefix: /
+      metadata:
+        filterMetadata:
+          istio:
+            config: /apis/networking.istio.io/v1/namespaces/apps/virtual-service/backend-service-resilience-policy
+      route:
+        cluster: outbound|80||httpbin.apps.svc.cluster.local
+        maxGrpcTimeout: 15s
+        retryPolicy:
+          hostSelectionRetryMaxAttempts: "5"
+          numRetries: 3
+          retryHostPredicate:
+          - name: envoy.retry_host_predicates.previous_hosts
+            typedConfig:
+              '@type': type.googleapis.com/envoy.extensions.retry.host.previous_hosts.v3.PreviousHostsPredicate
+          retryOn: connect-failure,reset,refused-stream,unavailable,cancelled,resource-exhausted,retriable-status-codes
+        timeout: 15s
+  - domains:
+    - istio-ingress.istio-ingress.svc.cluster.local
+    - istio-ingress.istio-ingress.svc.cluster.local.
+    - istio-ingress.istio-ingress
+    - istio-ingress.istio-ingress.svc
+    - 10.104.253.158
+    includeRequestAttemptCount: true
+    name: istio-ingress.istio-ingress.svc.cluster.local:80
+    routes:
+    - decorator:
+        operation: istio-ingress.istio-ingress.svc.cluster.local:80/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: outbound|80||istio-ingress.istio-ingress.svc.cluster.local
+        maxGrpcTimeout: 0s
+        retryPolicy:
+          hostSelectionRetryMaxAttempts: "5"
+          numRetries: 2
+          retryHostPredicate:
+          - name: envoy.retry_host_predicates.previous_hosts
+            typedConfig:
+              '@type': type.googleapis.com/envoy.extensions.retry.host.previous_hosts.v3.PreviousHostsPredicate
+          retryOn: connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes
+        timeout: 0s
+  - domains:
+    - '*'
+    includeRequestAttemptCount: true
+    name: allow_any
+    routes:
+    - match:
+        prefix: /
+      name: allow_any
+      route:
+        cluster: PassthroughCluster
+        maxGrpcTimeout: 0s
+        timeout: 0s
+- ignorePortInHostMatching: true
+  maxDirectResponseBodySizeBytes: 1048576
+  name: "8000"
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - httpbin.apps.svc.cluster.local
+    - httpbin.apps.svc.cluster.local.
+    - httpbin
+    - httpbin.apps.svc
+    - httpbin.apps
+    - 10.110.39.238
+    includeRequestAttemptCount: true
+    name: httpbin.apps.svc.cluster.local:8000
+    routes:
+    - decorator:
+        operation: httpbin.apps.svc.cluster.local:8000/*
+      match:
+        prefix: /
+      metadata:
+        filterMetadata:
+          istio:
+            config: /apis/networking.istio.io/v1/namespaces/apps/virtual-service/backend-service-resilience-policy
+      route:
+        cluster: outbound|8000||httpbin.apps.svc.cluster.local
+        maxGrpcTimeout: 15s
+        retryPolicy:
+          hostSelectionRetryMaxAttempts: "5"
+          numRetries: 3
+          retryHostPredicate:
+          - name: envoy.retry_host_predicates.previous_hosts
+            typedConfig:
+              '@type': type.googleapis.com/envoy.extensions.retry.host.previous_hosts.v3.PreviousHostsPredicate
+          retryOn: connect-failure,reset,refused-stream,unavailable,cancelled,resource-exhausted,retriable-status-codes
+        timeout: 15s
+  - domains:
+    - '*'
+    includeRequestAttemptCount: true
+    name: allow_any
+    routes:
+    - match:
+        prefix: /
+      name: allow_any
+      route:
+        cluster: PassthroughCluster
+        maxGrpcTimeout: 0s
+        timeout: 0s
+- ignorePortInHostMatching: true
+  maxDirectResponseBodySizeBytes: 1048576
+  name: "15010"
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - istiod.istio-system.svc.cluster.local
+    - istiod.istio-system.svc.cluster.local.
+    - istiod.istio-system
+    - istiod.istio-system.svc
+    - 10.100.32.70
+    includeRequestAttemptCount: true
+    name: istiod.istio-system.svc.cluster.local:15010
+    routes:
+    - decorator:
+        operation: istiod.istio-system.svc.cluster.local:15010/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: outbound|15010||istiod.istio-system.svc.cluster.local
+        maxGrpcTimeout: 0s
+        retryPolicy:
+          hostSelectionRetryMaxAttempts: "5"
+          numRetries: 2
+          retryHostPredicate:
+          - name: envoy.retry_host_predicates.previous_hosts
+            typedConfig:
+              '@type': type.googleapis.com/envoy.extensions.retry.host.previous_hosts.v3.PreviousHostsPredicate
+          retryOn: connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes
+        timeout: 0s
+  - domains:
+    - '*'
+    includeRequestAttemptCount: true
+    name: allow_any
+    routes:
+    - match:
+        prefix: /
+      name: allow_any
+      route:
+        cluster: PassthroughCluster
+        maxGrpcTimeout: 0s
+        timeout: 0s
+- ignorePortInHostMatching: true
+  maxDirectResponseBodySizeBytes: 1048576
+  name: kube-dns.kube-system.svc.cluster.local:9153
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - '*'
+    includeRequestAttemptCount: true
+    name: kube-dns.kube-system.svc.cluster.local:9153
+    routes:
+    - decorator:
+        operation: kube-dns.kube-system.svc.cluster.local:9153/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: outbound|9153||kube-dns.kube-system.svc.cluster.local
+        maxGrpcTimeout: 0s
+        retryPolicy:
+          hostSelectionRetryMaxAttempts: "5"
+          numRetries: 2
+          retryHostPredicate:
+          - name: envoy.retry_host_predicates.previous_hosts
+            typedConfig:
+              '@type': type.googleapis.com/envoy.extensions.retry.host.previous_hosts.v3.PreviousHostsPredicate
+          retryOn: connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes
+        timeout: 0s
+- name: InboundPassthroughCluster
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - '*'
+    name: inbound|http|0
+    routes:
+    - decorator:
+        operation: :0/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: InboundPassthroughCluster
+        maxStreamDuration:
+          grpcTimeoutHeaderMax: 0s
+          maxStreamDuration: 0s
+        retryPolicy:
+          numRetries: 2
+          retryOn: reset-before-request
+        timeout: 0s
+- virtualHosts:
+  - domains:
+    - '*'
+    name: backend
+    routes:
+    - match:
+        prefix: /healthz/ready
+      route:
+        cluster: agent
+- virtualHosts:
+  - domains:
+    - '*'
+    name: backend
+    routes:
+    - match:
+        prefix: /stats/prometheus
+      route:
+        cluster: prometheus_stats
+- name: InboundPassthroughCluster
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - '*'
+    name: inbound|http|0
+    routes:
+    - decorator:
+        operation: :0/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: InboundPassthroughCluster
+        maxStreamDuration:
+          grpcTimeoutHeaderMax: 0s
+          maxStreamDuration: 0s
+        retryPolicy:
+          numRetries: 2
+          retryOn: reset-before-request
+        timeout: 0s
+- name: inbound|80||
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - '*'
+    name: inbound|http|8000
+    routes:
+    - decorator:
+        operation: httpbin.apps.svc.cluster.local:8000/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: inbound|80||
+        maxStreamDuration:
+          grpcTimeoutHeaderMax: 0s
+          maxStreamDuration: 0s
+        retryPolicy:
+          numRetries: 2
+          retryOn: reset-before-request
+        timeout: 0s
+- name: inbound|80||
+  validateClusters: false
+  virtualHosts:
+  - domains:
+    - '*'
+    name: inbound|http|8000
+    routes:
+    - decorator:
+        operation: httpbin.apps.svc.cluster.local:8000/*
+      match:
+        prefix: /
+      name: default
+      route:
+        cluster: inbound|80||
+        maxStreamDuration:
+          grpcTimeoutHeaderMax: 0s
+          maxStreamDuration: 0s
+        retryPolicy:
+          numRetries: 2
+          retryOn: reset-before-request
+        timeout: 0s
+

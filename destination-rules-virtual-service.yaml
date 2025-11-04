@@ -1,0 +1,39 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: backend-service-resilience-policy
+  namespace: apps
+spec:
+  # This policy applies to traffic destined for your backend service
+  host: httpbin
+  trafficPolicy:
+    connectionPool:
+      http:
+        # This is the preventative measure.
+        # It tells the KrakenD sidecar to close idle connections before the backend does.
+        # This value MUST be shorter than your backend application's keep-alive timeout.
+        # e.g., 45s for a Tomcat app (60s default), or 4s for Node.js (5s default).
+        idleTimeout: 5s
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: backend-service-resilience-policy
+  namespace: apps
+spec:
+  hosts:
+    # This policy applies to requests targeting your backend service
+    - httpbin.apps.svc.cluster.local
+  http:
+  - retries:
+      # This is the recovery measure.
+      # Total number of attempts (1 initial call + 2 retries = 3 total).
+      attempts: 3
+      # Conditions that will trigger a retry.
+      # 'connect-failure' and 'refused-stream' are the key values
+      # that match a "connection reset" error.
+      retryOn: connect-failure,reset,refused-stream,unavailable,cancelled,resource-exhausted,retriable-status-codes
+    timeout: 15s
+    route:
+    - destination:
+        host: httpbin.apps.svc.cluster.local
